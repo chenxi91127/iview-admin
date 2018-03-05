@@ -12,6 +12,10 @@ fs.open('./build/env.js', 'w', function(err, fd) {
     fs.write(fd, buf, 0, buf.length, 0, function(err, written, buffer) {});
 });
 
+if (webpackBaseConfig.hot) {
+    webpackBaseConfig.hot.accept();
+}
+
 module.exports = merge(webpackBaseConfig, {
     devtool: '#source-map',
     output: {

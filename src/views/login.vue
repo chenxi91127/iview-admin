@@ -1,5 +1,6 @@
 <style lang="less">
     @import './login.less';
+    @import '../styles/loading.less';
 </style>
 
 <template>
@@ -34,6 +35,12 @@
                 </div>
             </Card>
         </div>
+
+        <Spin fix v-if="spinShow">
+            <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
+            <div>登录中...</div>
+        </Spin>
+
     </div>
 </template>
 
@@ -42,6 +49,8 @@ import Cookies from 'js-cookie';
 export default {
     data () {
         return {
+            // spinShow: this.$store.state.message.loading,
+            spinShow: false,
             form: {
                 userName: 'iview_admin',
                 password: ''
@@ -58,12 +67,18 @@ export default {
         };
     },
     mounted () {
-        let self = this;
-        // self.$Message.error('这是什么鬼？');
-        self.$Message.success('这是什么鬼?');
+        /*let self = this;
+        console.log(self.$store.state.message.loading);
+        this.$nextTick(function () {
+            console.log('顺序3');
+        });
+        console.log('顺序0');
+        self.$Message.success('这是什么鬼?');*/
     },
     methods: {
         handleSubmit () {
+            let self = this;
+            self.spinShow = true;
             this.$refs.loginForm.validate((valid) => {
                 if (valid) {
                     Cookies.set('user', this.form.userName);
@@ -80,6 +95,14 @@ export default {
                 }
             });
         }
+    },
+    created () {
+        // console.log('顺序1');
+    },
+    watch: {
+        // spinShow: function (val, oldVal) {
+        //     console.log('val：' + val);
+        // }
     }
 };
 </script>

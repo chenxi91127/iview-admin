@@ -12,15 +12,41 @@ util.title = function (title) {
 };
 
 const ajaxUrl = env === 'development'
-    ? 'http://127.0.0.1:8888'
+    ? 'http://localhost:8000/cxy2_1/'
     : env === 'production'
         ? 'https://www.url.com'
         : 'https://debug.url.com';
 
-util.ajax = axios.create({
-    baseURL: ajaxUrl,
-    timeout: 30000
+axios.defaults.baseURL = ajaxUrl;
+// axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+// 允许跨域
+// axios.defaults.withCredentials = true;
+// 超时设置
+axios.defaults.timeout = 30000;
+
+// 添加请求拦截器
+axios.interceptors.request.use(function (config) {
+    // 在发送请求之前做些什么
+    return config;
+}, function (error) {
+    // 对请求错误做些什么
+    return Promise.reject(error);
 });
+
+// 添加响应拦截器
+axios.interceptors.response.use(function (response) {
+    // 对响应数据做点什么
+    return response;
+}, function (error) {
+    // 对响应错误做点什么
+    return Promise.reject(error);
+});
+
+// util.ajax = axios.create({
+//     baseURL: ajaxUrl,
+//     timeout: 30000
+// });
 
 util.inOf = function (arr, targetArr) {
     let res = true;
